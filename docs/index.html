@@ -43,9 +43,9 @@
       <p>Por favor, aguarde!<br>A aplicação iniciará em instantes!</p>
     </div>
 
-    <!-- Script para remover o texto de carregamento após 40 segundos -->
+    <!-- Script para remover o texto de carregamento após 10 segundos -->
     <script>
-      // Remove o texto de carregamento após 40 segundos (40000 milissegundos)
+      // Remove o texto de carregamento após 10 segundos (10000 milissegundos)
       setTimeout(() => {
         const loadingText = document.getElementById("loading-text");
         if (loadingText) {
@@ -58,7 +58,7 @@
             loadingText.remove();
           }, 500); // 500ms é o tempo da transição
         }
-      }, 40000); // 40000 milissegundos = 40 segundos
+      }, 10000); // 10000 milissegundos = 10 segundos
     </script>
     
   </body>
