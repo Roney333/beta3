@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shiny App</title>
+    
+    <link rel="stylesheet" href="./shinylive/style-resets.css" />
+    <link rel="stylesheet" href="./shinylive/shinylive.css" />
+    
+    <style>
+      #loading-overlay {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        z-index: 9999; display: flex; flex-direction: column;
+        justify-content: center; align-items: center;
+        background-color: #ffffff; transition: opacity 0.5s ease-out;
+      }
+      .spinner {
+        width: 50px; height: 50px; border: 7px solid #f3f3f3;
+        border-top: 7px solid #2ecc71; /* Cor alterada para verde */ border-radius: 50%;
+        animation: spin 1.5s linear infinite;
+      }
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      .loading-message {
+        margin-top: 25px; font-family: sans-serif; font-size: 1.1em;
+        color: #555555; text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    
+    <div id="loading-overlay">
+      <div class="spinner"></div>
+      <div class="loading-message">
+        Por favor, aguarde! <br>A aplicação iniciará em instantes!
+      </div>
+    </div>
+
+    <div style="height: 100vh; width: 100vw" id="root"></div>
+
+    <script src="./shinylive/load-shinylive-sw.js" type="module"></script>
+    <script type="module">
+      import { runExportedApp } from "./shinylive/shinylive.js";
+
+      const overlay = document.getElementById('loading-overlay');
+
+      // Função para esconder a tela de carregamento
+      const hideOverlay = () => {
+        if (overlay) {
+          overlay.style.opacity = '0';
+          setTimeout(() => overlay.remove(), 500);
+        }
+      };
+
+      // Define um tempo fixo de 25 segundos para remover a tela de carregamento
+      setTimeout(hideOverlay, 25000);
+
+      // Inicia o carregamento do aplicativo em segundo plano
+      runExportedApp({
+        id: "root",
+        appEngine: "r",
+        relPath: "",
+      });
+
+    </script>
+    
+  </body>
+</html>
