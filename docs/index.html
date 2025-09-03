@@ -14,7 +14,7 @@
         z-index: 9999;
         background-color: #ffffff;
         display: flex;
-        flex-direction: column; /* Spinner em cima da mensagem */
+        flex-direction: column;
         justify-content: center;
         align-items: center;
         opacity: 1;
@@ -28,6 +28,7 @@
         border-top: 7px solid #2ecc71;
         border-radius: 50%;
         animation: spin 1.5s linear infinite;
+        margin-top: 25px; 
         margin-bottom: 25px;
       }
 
@@ -43,14 +44,27 @@
         text-align: center;
         line-height: 1.5;
       }
+
+      /* NEW: Style for the larger title phrase */
+      .loading-title {
+        font-family: sans-serif;
+        font-size: 1.6em; /* Increased font size */
+        font-weight: bold; /* Made it bold for emphasis */
+        color: #333333; /* Slightly darker color for prominence */
+        text-align: center;
+        margin-bottom: 10px; /* Space between title and spinner */
+      }
     </style>
   </head>
   <body>
     
     <div id="loading-overlay">
+      <div class="loading-title"> 
+        Análise Automatizada de Pesquisa de Preços
+      </div>
       <div class="custom-spinner"></div>
       <div class="loading-message">
-       Análise Automatizada de Pesquisa de Preços <br> Por favor, aguarde! <br>A aplicação iniciará em instantes!
+        Por favor, aguarde! <br>A aplicação iniciará em instantes!
       </div>
     </div>
 
@@ -70,32 +84,24 @@
         }
       };
 
-      // O observador tem uma única missão: encontrar o iframe assim que ele for criado.
       const observer = new MutationObserver((mutations, obs) => {
         const shinyIframe = rootElement.querySelector("iframe");
 
         if (shinyIframe) {
           console.log("Iframe detectado. Agora, aguardando o conteúdo interno carregar...");
 
-          // O iframe foi encontrado. Agora, a parte mais importante:
-          // Adicionamos um "ouvinte" que espera pelo evento 'load' do iframe.
-          // Este evento só dispara quando TUDO dentro dele estiver 100% carregado e renderizado.
           shinyIframe.addEventListener('load', () => {
             console.log("Evento 'load' do iframe disparado. O App está visualmente pronto!");
             
-            // AGORA SIM, é o momento perfeito para remover a tela de carregamento.
             hideOverlay();
           });
 
-          // O trabalho do observador terminou. Ele só precisava encontrar o iframe.
           obs.disconnect();
         }
       });
 
-      // Inicia a observação do #root
       observer.observe(rootElement, { childList: true, subtree: true });
 
-      // Inicia o carregamento do Shinylive
       runExportedApp({
         id: "root",
         appEngine: "r",
